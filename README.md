@@ -106,6 +106,8 @@ int main() {
 expression and convert the same to postfix expression for evaluation. Develop and execute a program in C 
 using suitable data structures to perform the same and print both the expressions. The input expression 
 consists of single character operands and the binary operators + (plus), - (minus), * (multiply) and /(divide) 
+
+
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <ctype.h> 
