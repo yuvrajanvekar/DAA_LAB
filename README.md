@@ -1,761 +1,945 @@
-#os
+TERMWORK 1A  DATE : 13/02/2025
 
-Termwork – 1 : Linux Internal and External Commands
-
-
-
-Termwork – 2A : FCFS Scheduling Algorithm
-
-/*
-FCFS Scheduling Program in C
-*/
 #include <stdio.h>
 #include <stdlib.h>
-
+//Function to compute gcd
+int gcd(int m, int n)
+{
+    int r;
+    while(n!=0)
+    {
+        r=m%n;
+        m=n;
+        n=r;
+    }
+    return m;
+}
 int main()
 {
-    int pid[15];
-    int bt[15];
-    int n;
-    printf("Enter the number of processes : ");
-    scanf("%d",&n);
-
-    printf("Enter process id of all processes :  ");
-    for(int i=0;i<n;i++){
-        scanf("%d",&pid[i]);
+    int m,n;
+    //Input two non negative and non zero numbers.
+    printf("Enter two non negative and non zero numbers.\n");
+    scanf("%d%d",&m,&n);
+    if(m<=0||n<=0)
+    {
+        printf("Invalid input.\nTry again.\n");
     }
-
-    printf("Enter burst time of all the processes : ");
-    for(int i=0;i<n;i++){
-        scanf("%d",&bt[i]);
+    else
+    {
+        int result=gcd(m,n);
+        printf("GCD of %d and %d is %d.\n",m,n,result);
     }
-
-    int wt[n];
-    wt[0]=0;
-    //calculating waiting time of each process
-    for(int i=1;i<n;i++){
-        wt[i]=bt[i-1]+wt[i-1];
-    }
-
-    printf("Process ID      Burst Time      Waiting Time    Turnaround Time\n");
-    float twt=0.0;
-    float ttt=0.0;
-    for(int i=0;i<n;i++){
-        printf("%d\t\t",pid[i]);
-        printf("%d\t\t",bt[i]);
-        printf("%d\t\t",wt[i]);
-        //calculating and printing turnaround time for each process
-        printf("%d\t\t",bt[i]+wt[i]);
-        printf("\n");
-        //total waiting time
-        twt+=wt[i];
-        //total turnaround time
-        ttt=wt[i]+bt[i];
-    }
-    //avg wating time
-    float awt=twt/n;
-    //avg turnaround time
-    float att=ttt/n;
-
-    printf("Avg. waiting time = %f\n",awt);
-    printf("Avg. turnaround time = %f\n",att);
-
-
     return 0;
 }
 
+=> OUTPUT
+Enter two non negative and non zero numbers.
+50 5
+GCD of 50 and 5 is 5.
+=================================================================================================================================
 
+TERMWORK 1B  DATE : 13/02/2025
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Termwork – 2B : SJF Scheduling Algorithm
-
-/*
-SJF Scheduling Program in C
-*/
 #include <stdio.h>
 #include <stdlib.h>
 
 int main()
 {
-    int bt[20],p[20],wt[20],tat[20],i,j,n,total=0,totalT=0,temp;
-    float avg_wt,avg_tat;
-    printf("Enter the number of processes : ");
-    scanf("%d",&n);
-
-    printf("\nEnter Burst Time:\n");
-    for(i=0;i<n;i++){
-        printf("p%d : ",i+1);
-        scanf("%d",&bt[i]);
-        p[i]=i+1;
+    int m,n,t;
+    //Input two non negative and non zero numbers.
+    printf("Enter two non negative and non zero numbers.\n");
+    scanf("%d%d",&m,&n);
+    if(m<=0||n<=0)
+    {
+        printf("Invalid input.\nTry again.\n");
     }
+    else
+    {
+       if(m<n)
+       {
+           t=m;
+       }
+       else
+       {
+           t=n;
+       }
+       /*while(t)
+       {
+           if(m%t==0)
+           {
+               if(n%t==0)
+               {
+                   printf("GCD(%d,%d)=%d\n",m,n,t);
+                   exit(0);
+               }
+               else
+               {
+                   t--;
+               }
+           }
+           else
+           {
+                t--;
+           }
+       }*/
+       while(t>0)
+       {
+           if(m%t==0 & n%t==0)
+           {
+               printf("GCD(%d,%d)=%d\n",m,n,t);
+               exit(0);
+           }
+           else
+           {
+               t--;
+           }
+       }
+    }
+    return 0;
+}
 
-    for(i=0;i<n;i++){
-        for(j=0;j<n-i-1;j++){
-            if(bt[j]>bt[j+1]){
-                temp=bt[j];
-                bt[j]=bt[j+1];
-                bt[j+1]=temp;
-                temp=p[j];
-                p[j]=p[j+1];
-                p[j+1]=temp;
-            }
+=>OUTPUT
+Enter two non negative nad non zero numbers.
+10 5
+GCD(10,5)=5
+=================================================================================================================================
+
+TERMWORK 2A    DATE : 19/02/2025
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int item,pos,flag=0,i,a[5];
+    printf("Enter array elements : ");
+    for(i=0;i<5;i++)
+    {
+        scanf("%d",&a[i]);
+    }
+    printf("Enter item to search : ");
+    scanf("%d",&item);
+    for(i=0;i<5;i++)
+    {
+        if(a[i]==item)
+        {
+            flag=1;
+            pos=i;
+            break;
         }
     }
-    wt[0]=0;
-    tat[0]=bt[0];
-    //Waiting time and turnaround time
-    for(i=1;i<n;i++){
-        wt[i]=0;
-        wt[i]=bt[i-1]+wt[i-1];
-        tat[i]=bt[i]+wt[i];
+    if(flag==1)
+    {
+        printf("%d is present in the array at position %d.\n",item,pos+1);
     }
-
-    printf("Process ID      Burst Time      Waiting Time    Turnaround Time\n");
-    for(int i=0;i<n;i++){
-        printf("%d\t\t",p[i]);
-        printf("%d\t\t",bt[i]);
-        printf("%d\t\t",wt[i]);
-        printf("%d\t\t",tat[i]);
-        printf("\n");
-
-        total+=wt[i];
-        totalT+=tat[i];
+    else
+    {
+        printf("%d is not found in the array.\n");
     }
-
-    //avg wating time
-    avg_wt=(float)total/n;
-    //avg turnaround time
-    avg_tat=(float)totalT/n;
-
-    printf("Avg. waiting time = %f\n",avg_wt);
-    printf("Avg. turnaround time = %f\n",avg_tat);
-
     return 0;
 }
- 
-Termwork – 3 : Unix Process control system calls			Date : 03/03/2025
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<unistd.h>
-#include<sys/types.h>
-#include<sys/wait.h>
+=> OUTPUT
+Enter array elements : 4 6 2 8 7
+Enter item to search : 2
+2 is present in the array at position 3.
+
+=================================================================================================================================
+
+TERMWORK 2B   DATE 19/02/2025
+
+#include <stdio.h>
+#include <stdlib.h>
+#include<time.h>
+#define MAX 200
+
+void getdata(int arr[])
+{
+    int i;
+    for(i=0;i<MAX;i++)
+    {
+        arr[i]=rand();
+        printf("%d ",arr[i]);
+    }
+}
+int main()
+{
+    int item,pos,flag=0,i,a[MAX];
+    clock_t start1=0,end1=0;
+    getdata(a);
+    start1=start1+clock();
+    printf("\n\nEnter item to search : ");
+    scanf("%d",&item);
+    for(i=0;i<MAX;i++)
+    {
+        if(a[i]==item)
+        {
+            flag=1;
+            pos=i;
+            break;
+        }
+    }
+    if(flag==1)
+    {
+        printf("\n%d is present in the array at position %d.\n",item,pos+1);
+    }
+    else
+    {
+        printf("\n%d is not found in the array.\n",item);
+    }
+    end1=end1+clock();
+    printf("\nTime taken is = %f\n",((float)(end1-start1))/CLOCKS_PER_SEC);
+    return 0;
+}
+
+=>OUTPUT
+41 18467 6334 26500 19169 15724 11478 29358 26962 24464 5705 28145 23281 16827 9961 491 2995 11942 
+4827 5436 32391 14604 3902 153 292 12382 17421 18716 19718 19895 5447 21726 14771 11538 1869 19912 
+25667 26299 17035 9894 28703 23811 31322 30333 17673 4664 15141 7711 28253 6868 25547 27644 32662 
+32757 20037 12859 8723 9741 27529 778 12316 3035 22190 1842 288 30106 9040 8942 19264 22648 27446 
+23805 15890 6729 24370 15350 15006 31101 24393 3548 19629 12623 24084 19954 18756 11840 4966 7376 
+13931 26308 16944 32439 24626 11323 5537 21538 16118 2082 22929 16541 4833 31115 4639 29658 22704 
+9930 13977 2306 31673 22386 5021 28745 26924 19072 6270 5829 26777 15573 5097 16512 23986 13290 
+9161 18636 22355 24767 23655 15574 4031 12052 27350 1150 16941 21724 13966 3430 31107 30191 18007 
+11337 15457 12287 27753 10383 14945 8909 32209 9758 24221 18588 6422 24946 27506 13030 16413 29168 
+900 32591 18762 1655 17410 6359 27624 20537 21548 6483 27595 4041 3602 24350 10291 30836 9374 11020 
+4596 24021 27348 23199 19668 24484 8281 4734 53 1999 26418 27938 6900 3788 18127 467 3728 14893 24648 
+22483 17807 2421 14310 6617 22813 9514
+
+Enter item to search : 3430
+
+3430 is present in the array at position 136.
+
+Time taken is = 5.499000
+
+=================================================================================================================================
+
+TERMWORK 3        DATE : 05/03/2025
+
+#include <stdio.h>
+#include<time.h>
+#include <stdlib.h>
+#define MAX 48000
+
+void mergesort(int arr[], int low, int high){
+    int mid;
+    if(low<high){
+        mid=(low+high)/2;
+        mergesort(arr,low,mid);
+        mergesort(arr,mid+1,high);
+        merge(arr,low,mid,high);
+    }
+}
+
+void merge(int arr[], int low, int mid, int high){
+    int i,j,k,l,b[MAX];
+    l=low;
+    i=low;
+    j=mid+1;
+    while((l<=mid)&&(j<=high)){
+        if(arr[l]<=arr[j]){
+            b[i]=arr[l];
+            l++;
+        }
+        else{
+            b[i]=arr[j];
+            j++;
+        }
+        i++;
+    }
+    if(l>mid){
+        for(k=j;k<=high;k++){
+            b[i]=arr[k];
+            i++;
+        }
+    }
+    else{
+        for(k=l;k<=mid;k++){
+            b[i]=arr[k];
+            i++;
+        }
+    }
+    for(k=low;k<=high;k++){
+        arr[k]=b[k];
+    }
+}
+
+void getdata(int arr[]){
+    int i;
+    printf("Randomly generated array.\n");
+    for(i=0;i<MAX;i++){
+        arr[i]=rand();
+        printf("%d ",arr[i]);
+    }
+}
 
 int main()
 {
-    pid_t pid;
+    int arr[MAX];
+    clock_t start1=0,end1=0;
+    getdata(arr);
+    start1=start1+clock();
+    mergesort(arr,0,MAX-1);
 
-    pid=fork();//Create a child process
+    printf("\n\nSorted array.\n");
 
-    if(pid<0){
-        perror("Fork failed");
-        exit(1);
-    } else if(pid==0){//child process
-        printf("Child Process : PID = %d, Parent PID = %d\n",getpid(),getppid());
-        sleep(2);//Simulate some work
-        printf("Child Process exiting\n");
-        exit(0);
-    } else{
-        printf("Parent Process : PID = %d, Child PID = %d\n",getpid(),pid);
-        int status;
-        wait(&status);//Wait for child process to complete
-        printf("Parent Process :Child exited with status %d\n",WEXITSTATUS(status));
+    for(int i=0;i<MAX;i++){
+        printf("%d ",arr[i]);
     }
-
+    printf("\n");
+    end1=end1+clock();
+    printf("TIme taken is = %f\n",((float)(end1-start1))/CLOCKS_PER_SEC);
     return 0;
-} 
-Termwork – 4 : Process Synchronization - The Dining-Philosophers Problem
-Date : 03/03/2025
+}
+
+OUTPUT ==>
+
+Randomly generated array.
+41 18467 6334 26500 19169 15724 11478 29358 26962 24464 5705 28145 23281 16827 9961 491 2995 11942 4827 5436 32391 14604 3902 153 292 12382 17421 18716 19718 19895 5447 21726 14771 11538 1869 19912 25667 26299 17035 9894 28703 23811 31322 30333 17673 4664 15141 7711 28253 6868
+
+Sorted array.
+41 153 292 491 1869 2995 3902 4664 4827 5436 5447 5705 6334 6868 7711 9894 9961 11478 11538 11942 12382 14604 14771 15141 15724 16827 17035 17421 17673 18467 18716 19169 19718 19895 19912 21726 23281 23811 24464 25667 26299 26500 26962 28145 28253 28703 29358 30333 31322 32391
+TIme taken is = 0.000000
+
+=================================================================================================================================
+
+TERMWORK 4           DATE : 05/03/2025
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <pthread.h>
-#include <unistd.h>
+#define MAX 200
 
-pthread_t* philosophers;
-pthread_mutex_t* forks;
-int philosophers_count;
-pthread_barrier_t barrier;  // Barrier to synchronize the start of all philosophers
-
-void eat(int i) {
-    printf("Philosopher %d is eating\n", i + 1);
-    sleep(1 + rand() % 10);
+void getdata(int arr[]) {
+    int i;
+    for (i = 0; i < MAX; i++) {
+        arr[i] = rand();  // Generate random numbers
+        printf("%d ", arr[i]);
+    }
 }
 
-void* philosopher(void* args) {
-    int i = *((int*)args);  // Get philosopher's index directly from arguments
-    int first, second;
+void insertionSort(int arr[], int n) {
+    int i, j, v;
+    for (i = 1; i < n; i++) {
+        v = arr[i];  // Store the current element
+        j = i - 1;
 
-    // Synchronize all philosophers to start together
-    pthread_barrier_wait(&barrier);  // Wait for all philosophers to be ready
-
-    while (1) {
-        printf("Philosopher %d is thinking\n", i + 1);
-        sleep(1 + rand() % 10);
-
-        first = i;
-        second = (i + 1) % philosophers_count;
-
-        // Lock forks in a consistent order (lower numbered fork first)
-        if (first > second) {
-            first = second;
-            second = i;
+        // Shift elements of the sorted part to the right
+        while (j >= 0 && arr[j] > v) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
         }
 
-        pthread_mutex_lock(&forks[first]);
-        pthread_mutex_lock(&forks[second]);
-
-        eat(i);
-
-        pthread_mutex_unlock(&forks[first]);
-        pthread_mutex_unlock(&forks[second]);
-    }
-
-    return NULL;
-}
-
-int main() {
-    int i, err;
-    srand(time(NULL)); // Seed the random number generator
-
-    printf("Enter the number of philosophers: ");
-    scanf("%d", &philosophers_count);
-
-    philosophers = (pthread_t*)malloc(philosophers_count * sizeof(pthread_t));
-    forks = (pthread_mutex_t*)malloc(philosophers_count * sizeof(pthread_mutex_t));
-
-    // Initialize mutexes for each fork
-    for (i = 0; i < philosophers_count; ++i) {
-        if (pthread_mutex_init(&forks[i], NULL) != 0) {
-            printf("Failed initializing fork %d\n", i + 1);
-            return 1;
-        }
-    }
-
-    // Initialize the barrier to synchronize the start of all threads
-    if (pthread_barrier_init(&barrier, NULL, philosophers_count) != 0) {
-        printf("Error initializing barrier\n");
-        return 1;
-    }
-
-    // Create threads for each philosopher
-    for (i = 0; i < philosophers_count; ++i) {
-        int* index = (int*)malloc(sizeof(int));
-        *index = i;
-
-        err = pthread_create(&philosophers[i], NULL, philosopher, (void*)index);
-        if (err != 0) {
-            printf("Error creating philosopher %d: %s\n", i + 1, strerror(err));
-            // Clean up already created threads and mutexes before exiting
-            for (int j = 0; j < i; ++j) {
-                pthread_cancel(philosophers[j]);
-                pthread_join(philosophers[j], NULL);
-            }
-            for (int j = 0; j < i; ++j) {
-                pthread_mutex_destroy(&forks[j]);
-            }
-            return 1;
-        } else {
-            printf("Successfully created philosopher %d\n", i + 1);
-        }
-    }
-
-    // Join all threads
-    for (i = 0; i < philosophers_count; ++i) {
-        pthread_join(philosophers[i], NULL);
-    }
-
-    // Clean up allocated memory and destroy mutexes
-    for (i = 0; i < philosophers_count; ++i) {
-        pthread_mutex_destroy(&forks[i]);
-    }
-    free(philosophers);
-    free(forks);
-
-    // Destroy the barrier
-    pthread_barrier_destroy(&barrier);
-
-    return 0;
-}
- 
-Termwork – 5A : Process Synchronization-Reader- writer and Producer –consumer Problem
-Date : 10/03/2025
-
-#include<stdio.h>
-#include<semaphore.h>
-#include<unistd.h>
-#include<pthread.h>
-
-sem_t rw_mutex; // Controls access to the shared resource
-sem_t mutex;    // Controls access to reader_count
-int reader_count = 0; // Number of active readers
-int shared_data = 0;  // Shared resource
-
-void* reader(void* arg) {
-    int reader_id = *((int*)arg);
-    while (1) {
-        sem_wait(&mutex);
-        reader_count++;
-        if (reader_count == 1) {
-            sem_wait(&rw_mutex); // First reader locks the resource
-        }
-        sem_post(&mutex);
-
-        // Critical Section (Reading)
-        printf("Reader %d: Read shared data = %d\n", reader_id, shared_data);
-        usleep(500000); // Simulating reading time
-
-        sem_wait(&mutex);
-        reader_count--;
-        if (reader_count == 0) {
-            sem_post(&rw_mutex); // Last reader unlocks the resource
-        }
-        sem_post(&mutex);
-        usleep(500000);
-    }
-    return NULL;
-}
-
-void* writer(void* arg) {
-    int writer_id = *((int*)arg);
-    while (1) {
-        sem_wait(&rw_mutex); // Locks the resource exclusively
-
-        // Critical Section (Writing)
-        shared_data++; // Modify shared resource
-        printf("Writer %d: Wrote shared data = %d\n", writer_id, shared_data);
-        usleep(500000); // Simulate writing time
-
-        sem_post(&rw_mutex); // Release the resource
-        usleep(500000);
-    }
-    return NULL;
-}
-
-int main() {
-    pthread_t r_threads[5], w_threads[2];
-    int reader_ids[5] = {1, 2, 3, 4, 5};
-    int writer_ids[2] = {1, 2}; // Corrected initialization of writer_ids
-
-    sem_init(&rw_mutex, 0, 1);  // Initialize rw_mutex for exclusive access
-    sem_init(&mutex, 0, 1);     // Initialize mutex for controlling reader_count
-
-    // Create reader and writer threads
-    for (int i = 0; i < 5; i++) {
-        pthread_create(&r_threads[i], NULL, reader, &reader_ids[i]);
-    }
-
-    for (int i = 0; i < 2; i++) {
-        pthread_create(&w_threads[i], NULL, writer, &writer_ids[i]);
-    }
-
-    // Join all threads (in practice, this won't be reachable due to infinite loops)
-    for (int i = 0; i < 5; i++) {
-        pthread_join(r_threads[i], NULL);
-    }
-    for (int i = 0; i < 2; i++) {
-        pthread_join(w_threads[i], NULL);
-    }
-
-    sem_destroy(&rw_mutex);
-    sem_destroy(&mutex);
-
-    return 0;
-}
- 
-Termwork – 5B : Process Synchronization Producer –consumer Problem
-Date : 10/03/2025
-
-#include<stdio.h>
-#include<stdlib.h>
-#include<semaphore.h>
-#include<unistd.h>
-#include<pthread.h>
-
-#define BUFFER_SIZE 5 // Size of the buffer
-
-int buffer[BUFFER_SIZE];
-int in = 0, out = 0; // Indexes for producer and consumer
-
-sem_t empty, full; // Semaphores for synchronization
-pthread_mutex_t mutex; // Mutex for critical section
-
-// Producer function
-void* producer(void* arg) {
-    int item = 1;
-    while (1) {
-        sleep(1); // Simulating production time
-        sem_wait(&empty); // Wait if buffer is full
-        pthread_mutex_lock(&mutex); // Lock critical section
-
-        // Produce an item
-        buffer[in] = item;
-        printf("Producer produced: %d\n", item);
-        in = (in + 1) % BUFFER_SIZE;
-        item++;
-
-        pthread_mutex_unlock(&mutex); // Unlock critical section
-        sem_post(&full); // Signal that buffer is not empty
-    }
-}
-
-// Consumer function
-void* consumer(void* arg) {
-    while (1) {
-        sleep(2); // Simulating consumption time
-        sem_wait(&full); // Wait if buffer is empty
-        pthread_mutex_lock(&mutex); // Lock critical section
-
-        // Consume an item
-        int item = buffer[out];
-        printf("Consumer consumed: %d\n", item);
-        out = (out + 1) % BUFFER_SIZE;
-
-        pthread_mutex_unlock(&mutex); // Unlock critical section
-        sem_post(&empty); // Signal that buffer has space
+        // Insert the current element at the correct position
+        arr[j + 1] = v;
     }
 }
 
 int main() {
-    pthread_t prod, cons;
+    int arr[MAX];
+    clock_t start, end;
 
-    // Initialize semaphores and mutex
-    sem_init(&empty, 0, BUFFER_SIZE);
-    sem_init(&full, 0, 0);
-    pthread_mutex_init(&mutex, NULL);
+    printf("Randomly generated array is : \n\n");
+    getdata(arr);  // Generate random array
 
-    // Create producer and consumer threads
-    pthread_create(&prod, NULL, producer, NULL);
-    pthread_create(&cons, NULL, consumer, NULL);
+    start = clock();
 
-    // Join threads
-    pthread_join(prod, NULL);
-    pthread_join(cons, NULL);
+    insertionSort(arr, MAX);  // Sorting using Insertion Sort
 
-    // Destroy semaphores and Mutex
-    sem_destroy(&empty);
-    sem_destroy(&full);
-    pthread_mutex_destroy(&mutex);
+    printf("\n\nAfter sorting, Array becomes : \n\n");
+    for(int i=0;i<MAX;i++){
+        printf("%d ",arr[i]);
+    }
+    end = clock();
+
+    printf("\n\nTime Taken is = %f seconds\n", ((double)(end - start)) / CLOCKS_PER_SEC);
 
     return 0;
-} 
-Termwork – 6 : Deadlock – Banker’s algorithm
-Date : 24/03/2025
+}
 
-//Modified Bankers Algorithm
+OUTPUT ==>
+
+Randomly generated array is :
+
+41 18467 6334 26500 19169 15724 11478 29358 26962 24464 5705 28145 23281 16827 9961 491 2995 11942 4827 5436
+
+After sorting, Array becomes :
+
+41 491 2995 4827 5436 5705 6334 9961 11478 11942 15724 16827 18467 19169 23281 24464 26500 26962 28145 29358
+
+Time Taken is = 0.000000 seconds
+
+=================================================================================================================================
+
+TERMWORK 5       DATE : 12/03/2025
 
 #include <stdio.h>
+#include <stdlib.h>
+#define MAX 20
+#define INFINITY 999
 
-void main()
-{
-    int process,resource,i,j,instance,k=0,count=0,m=0,h=0,outer,p,l;
-    printf("\nEnter the number of processes : ");
-    scanf("%d",&process);
-    l=process;
-    printf("\nEnter the number of resources : ");
-    scanf("%d",&resource);
-    int avail[resource],max[process][resource],allot[process][resource],need[process][resource],completed[process],pending[10];
-    for(i=0;i<process;i++){
-        completed[i]=0;
-        pending[i]=i;
-    }
+int cost[MAX][MAX], visited[MAX];
 
-    printf("\nEnter number of Available Instances : ");
-    for(i=0;i<resource;i++){
-        scanf("%d",&avail[i]);
-    }
+void prims(int cost[][MAX], int n) {
+    int i, j, ne = 1;
+    int a, b, u, v, min, mincost = 0;
+    for (i = 2; i <= n; i++)
+        visited[i] = 0;
 
-    printf("\nEnter maximum number of instances resources that a process needs : \n");
-    for(i=0;i<process;i++){
-        printf("For p[%d] ",i);
-        for(j=0;j<resource;j++){
-            scanf("%d",&max[i][j]);
-        }
-    }
+    printf("\nEdges of the spanning tree - \n");
+    visited[1] = 1;  // Start with vertex 1
 
-    printf("\nEnter number of instances already allocated to the process of a resource : \n");
-        for(i=0;i<process;i++){
-        printf("For p[%d] ",i);
-        for(j=0;j<resource;j++){
-            scanf("%d",&allot[i][j]);
+    while (ne < n) {
+        min = INFINITY;
 
-            need[i][j]=max[i][j]-allot[i][j];
-        }
-    }
-
-    for(outer=process;outer>=0;outer--){
-        for(j=0;j<l;j++){
-            i=pending[j];
-            if(completed[j]!=1){
-                k=0;
-                for(m=0;m<resource;m++){
-                    if(need[i][m]<=avail[m]){
-                        k++;
+        // Find the edge with the minimum weight
+        for (i = 1; i <= n; i++) {
+            if (visited[i] == 1) {
+                for (j = 1; j <= n; j++) {
+                    if (visited[j] == 0 && cost[i][j] < min) {
+                        min = cost[i][j];
+                        a = i;
+                        b = j;
                     }
-                }
-                if(k==resource && completed[j]==0){
-                    printf("p[%d]\t",i);
-                    completed[j]=1;
-                    for(p=0;p<resource;p++){
-                        avail[p]=avail[p]+allot[j][p];
-                    }
-                    count++;
                 }
             }
         }
+
+        if (visited[b] == 0) {
+            printf("%d. EDGE (%d,%d) = %d\n", ne++, a, b, min);
+            mincost += min;
+            visited[b] = 1;  // Mark the vertex as visited
+        }
+        cost[a][b] = cost[b][a] = INFINITY;  // Remove the edge from consideration
     }
-    if(count==process){
-        printf("\nSafe Sequence exists\n");
-    }else{
-        printf("Not exists\n");
-    }
 
-} 
-Termwork – 7 : Memory Management - Page replacement
-Date : 10/03/2025
-
-#include <stdio.h>
-
-#define MAX_FRAMES 3 //number of page frames
-#define MAX_PAGES 10 //number of pages
-
-//fun to check if a page is already in memory
-int is_page_in_frames(int frames[],int num_frames,int page){
-    for(int i=0;i<num_frames;i++){
-        if(frames[i]==page)
-            return 1;//page found in frames
-    }
-    return 0;//page not found
+    printf("\nMINIMUM COST = %d\n", mincost);
 }
 
-//FIFO page replacement algorithm
-void fifo_page_replacement(int pages[],int num_pages,int num_frames){
-    int frames[MAX_FRAMES];//page frames
-    int front=0;//points to the oldest page in queue
-    int page_faults=0;//page fault counter
+int main() {
+    int i, j, n;
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
 
-    //initialize frames to -1(empty)
-    for(int i=0;i<num_frames;i++){
-        frames[i]=-1;
+    printf("Enter the cost matrix (Enter 999 for INFINITY):\n");
+    for (i = 1; i <= n; i++) {
+        for (j = 1; j <= n; j++) {
+            scanf("%d", &cost[i][j]);
+            if (cost[i][j] == 0 && i != j) {
+                cost[i][j] = INFINITY;  // No edge between different nodes
+            }
+        }
     }
 
-    printf("\nPage reference string : ");
-    for(int i=0;i<num_pages;i++)
-        printf("%d ",pages[i]);
-    printf("\n\n");
+    prims(cost, n);
 
-    //process each request
-    for(int i=0;i<num_pages;i++){
-        int page=pages[i];
+    return 0;
+}
 
-        //check if the page is already in memory
-        if(!is_page_in_frames(frames,num_frames,page)){
-            //page fault occurs, replace the oldest page
-            frames[front]=page;
-            front = (front+1)%num_frames;//move pointer to the next page
-            page_faults++;
+OUTPUT =>
 
-            //print the frame content
-            printf("Page %d is loaded : ",page);
-            for(int j=0;j<num_frames;j++){
-                if(frames[j]!=-1)
-                    printf("%d ",frames[j]);
+Enter the number of vertices: 4
+Enter the cost matrix (Enter 999 for INFINITY):
+999 1 4 2
+1 999 999 999
+4 999 999 3
+2 999 3 999
+
+Edges of the spanning tree -
+1. EDGE (1,2) = 1
+2. EDGE (1,4) = 2
+3. EDGE (4,3) = 3
+
+MINIMUM COST = 6
+
+=================================================================================================================================
+
+TERMWORK 6                 DATE : 26/03/2025
+
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 20
+
+int main(int argc, char *argv[]) {
+    int x[MAX] = {0}, weights[MAX], values[MAX], v[MAX][MAX], n, i, j, m, val1, val2;
+
+    // Input number of items
+    printf("Enter the number of items: ");
+    scanf("%d", &n);
+
+    // Input item weights
+    printf("Enter weights: \n");
+    for(i = 0; i < n; i++)  // Start from 0 to work with 0-based index
+        scanf("%d", &weights[i]);
+
+    // Input item values
+    printf("Enter values: \n");
+    for(i = 0; i < n; i++)  // Start from 0 to work with 0-based index
+        scanf("%d", &values[i]);
+
+    // Input knapsack capacity
+    printf("Enter the KNAPSACK capacity: ");
+    scanf("%d", &m);
+
+    // Initialize DP table
+    for(i = 0; i <= n; i++) {
+        for(j = 0; j <= m; j++) {
+            if(i == 0 || j == 0)
+                v[i][j] = 0;
+            else
+                v[i][j] = -1;
+        }
+    }
+
+    // Dynamic programming process to fill the table
+    for(i = 1; i <= n; i++) {
+        for(j = 1; j <= m; j++) {
+            if(j < weights[i-1])  // Adjusted for 0-based index
+                v[i][j] = v[i-1][j];
+            else {
+                val1 = values[i-1] + v[i-1][j-weights[i-1]];  // Adjusted for 0-based index
+                val2 = v[i-1][j];
+                if(val1 > val2)
+                    v[i][j] = val1;
                 else
-                    printf("-");
+                    v[i][j] = val2;
             }
-            printf("\n");
-        }
-        else{
-            printf("Page %d already in frames. No replacement needed.\n",page);
         }
     }
-    printf("\nTotal Page Faults : %d\n",page_faults);
-}
 
-int main()
-{
-    int pages[MAX_PAGES]={1,3,0,3,5,6,3,5,1,3};//Example reference string
-    int num_pages=10;
-    int num_frames=MAX_FRAMES;
+    // Print the DP table
+    printf("The matrix is:\n");
+    for(i = 0; i <= n; i++) {
+        for(j = 0; j <= m; j++) {
+            printf("%d\t", v[i][j]);
+        }
+        printf("\n");
+    }
 
-    fifo_page_replacement(pages,num_pages,num_frames);
+    // Output the maximum profit
+    printf("Maximum profit obtained is: %d\n", v[n][m]);
 
+    // Track the selected items
+    i = n;
+    j = m;
+    while(i != 0 && j != 0) {
+        if(v[i][j] != v[i-1][j]) {
+            x[i-1] = 1;  // Mark item as selected (0-based index for x)
+            j = j - weights[i-1];  // Adjust index for weights (0-based)
+        }
+        i = i - 1;
+    }
+
+    // Output selected item weights
+    printf("Weights of selected items are: {");
+    for(i = 0; i < n; i++) {
+        if(x[i] == 1)
+            printf(" %d ", weights[i]);  // Print weights instead of values
+    }
+    printf("}\n");
+
+    system("PAUSE");
     return 0;
 }
 
+OUTPUT ==>
 
+Enter the number of items: 4
+Enter weights:
+3 4 5 6
+Enter values:
+2 3 4 1
+Enter the KNAPSACK capacity: 8
+The matrix is:
+0       0       0       0       0       0       0       0       0
+0       0       0       2       2       2       2       2       2
+0       0       0       2       3       3       3       5       5
+0       0       0       2       3       4       4       5       6
+0       0       0       2       3       4       4       5       6
+Maximum profit obtained is: 6
+Weights of selected items are: { 3  5 }
 
+=================================================================================================================================
 
-
-
-
-
-
-
-
-
-
-
-
-Termwork – 8 : File allocation strategies
-Date : 10/03/2025
+TERMWORK 7                   DATE : 02/04/2025
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_BLOCKS 100
 
-//block status : 0=free, 1=allocated
-int disk[MAX_BLOCKS] = {0};
-
-//Function to allocate file using sequential allocation
-void sequential_allocation(int start,int length){
-    if(start + length > MAX_BLOCKS){
-        printf("Error: Not enough contiguous state!\n");
-        return;
-    }
-
-    //check if blocks are free
-    for(int i=start;i<start+length;i++){
-        if(disk[i]==1){
-            printf("Error : Block %d is already allocated!\n",i);
-            return;
+void floyds(int p[10][10], int n) {
+    int i, j, k;
+    for(k = 1; k <= n; k++) {
+        for(i = 1; i <= n; i++) {
+            for(j = 1; j <= n; j++) {
+                if(p[i][j] > p[i][k] + p[k][j]) {
+                    p[i][j] = p[i][k] + p[k][j];
+                }
+            }
         }
-    }
-
-    //Allocated blocks
-    for(int i=start;i<start+length;i++){
-        disk[i]=1;
-    }
-    printf("File allocated using Sequential Allocation from Block %d to %d\n",start,start+length-1);
-}
-
-//Node structure for linked allocation
-typedef struct Node{
-    int block;
-    struct Node* next;
-}Node;
-
-//fun to allocate file using linked allocation
-void linked_allocation(int blocks[],int length){
-    Node* head=NULL;
-    Node* temp=NULL;
-
-    //Allocated blocks
-    for(int i=0;i<length;i++){
-        if(disk[blocks[i]]==1){
-            printf("Error : Block %d is already allocated!\n",blocks[i]);
-            return;
-        }
-        disk[blocks[i]]=1;
-
-        //create new node
-        Node* newNode = (Node*)malloc(sizeof(Node));
-        newNode->block = blocks[i];
-        newNode->next = NULL;
-
-        if(head==NULL){
-            head=newNode;
-            temp=newNode;
-        }else{
-            temp->next = newNode;
-            temp=newNode;
-        }
-    }
-
-    //print allocation
-    printf("File allocated using Linked Allocation at blocks : ");
-    temp=head;
-    while(temp!=NULL){
-        printf("%d -> ",temp->block);
-        temp=temp->next;
-    }
-    printf("NULL\n");
-    //Free allocated list
-    while(head!=NULL){
-        temp=head;
-        head=head->next;
-        free(temp);
     }
 }
 
-int main()
-{
-    int ch,start,length,num_blocks,blocks[MAX_BLOCKS];
-    while(1){
-        printf("\nFile Allocation Methods : \n");
-        printf("1. Sequential Allocation\n");
-        printf("2. Linked Allocation\n");
-        printf("3. Exit\n");
-        printf("Enter choice : ");
-        scanf("%d",&ch);
+int main() {
+    int p[10][10], w, n, e, u, v, i, j;
 
-        switch(ch){
-            case 1:
-                printf("Enter start block and length : ");
-                scanf("%d %d",&start,&length);
-                sequential_allocation(start,length);
-                break;
-            case 2:
-                printf("Enter number of blocks : ");
-                scanf("%d",&num_blocks);
-                printf("Enter block numbers : ");
-                for(int i=0;i<num_blocks;i++)
-                    scanf("%d",&blocks[i]);
-                linked_allocation(blocks,num_blocks);
-                break;
-            case 3:
-                printf("\nExiting......\n");
-                exit(0);
-            default:
-                printf("Invalid choice\n");
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+    printf("Enter the number of edges: ");
+    scanf("%d", &e);
+
+    // Initialize the matrix with infinity (999) for all non-diagonal elements
+    // Diagonal elements are initialized to 0 (distance from a vertex to itself is 0)
+    for(i = 1; i <= n; i++) {
+        for(j = 1; j <= n; j++) {
+            if(i == j)
+                p[i][j] = 0;  // Distance to itself is 0
+            else
+                p[i][j] = 999;  // Set to infinity
         }
+    }
+
+    // Input the edges and their weights
+    for(i = 1; i <= e; i++) {
+        printf("Enter the end vertices of edge %d with its weight: ", i);
+        scanf("%d%d%d", &u, &v, &w);
+        if(u <= n && v <= n) {
+            p[u][v] = w;
+        } else {
+            printf("Invalid vertex number. Please enter valid vertex numbers.\n");
+            i--;  // Decrement i to repeat the input for this edge
+        }
+    }
+
+    // Print the input matrix (Adjacency Matrix)
+    printf("\nMatrix of input data:\n");
+    for(i = 1; i <= n; i++) {
+        for(j = 1; j <= n; j++) {
+            printf("%d\t", p[i][j]);
+        }
+        printf("\n");
+    }
+
+    // Run Floyd-Warshall algorithm to compute shortest paths
+    floyds(p, n);
+
+    // Print the result (Shortest paths)
+    printf("\nThe shortest paths are:\n");
+    for(i = 1; i <= n; i++) {
+        for(j = 1; j <= n; j++) {
+            if(p[i][j] == 999)
+                printf("999\t");  // If there's no path, print "INF"
+            else
+                printf("%d\t", p[i][j]);
+        }
+        printf("\n");
     }
 
     return 0;
 }
 
+OUTPUT ==>
+
+Enter the number of vertices: 3
+Enter the number of edges: 9
+Enter the end vertices of edge 1 with its weight: 1 1 0
+Enter the end vertices of edge 2 with its weight: 1 2 4
+Enter the end vertices of edge 3 with its weight: 1 3 5
+Enter the end vertices of edge 4 with its weight: 2 1 2
+Enter the end vertices of edge 5 with its weight: 2 2 0
+Enter the end vertices of edge 6 with its weight: 2 3 999
+Enter the end vertices of edge 7 with its weight: 3 1 999
+Enter the end vertices of edge 8 with its weight: 3 2 2
+Enter the end vertices of edge 9 with its weight: 3 3 0
+
+Matrix of input data:
+0       4       5
+2       0       999
+999     2       0
+
+The shortest paths are:
+0       4       5
+2       0       7
+4       2       0
+
+=================================================================================================================================
+
+TERMWORK -08                   DATE : 16/04/2025
+
+#include <stdio.h>
+#include <stdlib.h>
+#include<math.h>
+#define MAX 20
+
+char arr[MAX][MAX];
+
+void print_grid(int n, int x[]){
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=n;j++){
+            arr[i][j]='-';
+        }
+    }
+
+    for(int i=1;i<=n;i++){
+        arr[i][x[i]]='Q';
+    }
+
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=n;j++){
+            printf("\t%c",arr[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int safetoplace(int x[], int k){
+    for(int i=1;i<k;i++){
+        if(x[i]==x[k]||i-x[i]==k-x[k]||i+x[i]==k+x[k])
+            return 0;//false
+    }
+    return 1;//true
+}
+
+void nqueens(int n){
+    int x[20],count=0,k=1;
+    x[k]=0;
+    while(k!=0){
+        x[k]=x[k]+1;
+        while((x[k]<=n)&&(!safetoplace(x,k))){
+            x[k]=x[k]+1;
+        }
+        if(x[k]<=n){
+            if(k==n){
+                count++;
+                printf("\n\tPlacement %d is : \n\n\n",count);
+                print_grid(n,x);
+                getch();
+            }
+            else{
+                k++;
+                x[k]=0;
+            }
+        }
+        else{
+            k--;
+        }
+    }
+    return;
+}
+
+int main()
+{
+    int n;
+    printf("\t CPROGRAM OF N-QUEEN PROBLEM\n\n");
+    printf("\nEnter the number of Queens : ");
+    scanf("%d",&n);
+    printf("\n\n\tUSING %d QUEEN'S STRATEGY\n\n",n);
+    nqueens(n);
+    return 0;
+}
+
+OUTPUT =>
+
+         CPROGRAM OF N-QUEEN PROBLEM
 
 
+Enter the number of Queens : 4
 
 
+        USING 4 QUEEN'S STRATEGY
 
 
+        Placement 1 is :
 
 
+        -       Q       -       -
+        -       -       -       Q
+        Q       -       -       -
+        -       -       Q       -
+
+        Placement 2 is :
 
 
-Termwork – 9 : pwd, cd, mkdir, rmdir, cp, rm, mv, cat ; Unix shell scripts
-Date : 10/03/2025
+        -       -       Q       -
+        Q       -       -       -
+        -       -       -       Q
+        -       Q       -       -
 
- 
+Process returned 0 (0x0)   execution time : 4.062 s
+Press any key to continue.
 
- 
- 
- 
+=================================================================================================================================
 
-Termwork – 10 : File Attributes: ls, ls-l, ls-d, file permissions, chmod Unix shell scripts
-Date : 10/03/2025
+TERMWORK -09                   DATE : 09/04/2025
 
- 
- 
+#include <stdio.h>
+#include <stdlib.h>
+#define INF 999
+
+int a[10][10], visited[10], n, e, cost = 0;
+
+void get() {
+    int i, j;
+
+    printf("Enter the number of cities (nodes): ");
+    scanf("%d", &n);
+
+    printf("Enter weight matrix (enter %d for no direct connection):\n", INF);
+
+    for (i = 1; i <= n; i++) {
+        for (j = 1; j <= n; j++) {
+            scanf("%d", &a[i][j]);
+            if (a[i][j] == 0 && i != j) {
+                a[i][j] = INF;
+            }
+        }
+        visited[i] = 0;
+    }
+}
+
+void mincost(int city) {
+    int i, ncity;
+    visited[city] = 1;
+    printf("%d -> ", city);
+    ncity = least(city);
+    if (ncity == -1) {
+        for (i = 1; i <= n; i++) {
+            if (a[city][i] != INF && visited[i] == 0) {
+                ncity = i;
+                printf("%d", ncity);
+                cost += a[city][ncity]; // Increment cost here
+                visited[ncity] = 1;
+                return;
+            }
+        }
+        return;
+    }
+    cost += a[city][ncity]; // Increment cost when moving to the least neighbor
+    mincost(ncity);
+}
+
+int least(int c) {
+    int i, nc = -1;
+    int min = INF;
+
+    for (i = 1; i <= n; i++) {
+        if ((a[c][i] != INF) && (visited[i] == 0)) {
+            if (a[c][i] < min) {
+                min = a[c][i];
+                nc = i;
+            }
+        }
+    }
+    return nc;
+}
+
+void put() {
+    printf("\nMinimum cost : %d\n", cost);
+}
+
+int main() {
+    get();
+    printf("\nThe Path is : ");
+    mincost(1);
+    printf("1\n");
+    put();
+    return 0;
+}
+
+OUTPUT =>
+
+Enter the number of cities (nodes): 5
+Enter weight matrix (enter 999 for no direct connection):
+0 2 999 5 1
+2 0 4 999 999
+999 4 0 3 999
+5 999 3 0 2
+1 999 999 2 0
+
+The Path is : 1 -> 5 -> 4 -> 3 -> 2 -> 1
+
+Minimum cost : 10
+
+=================================================================================================================================
+
+TERMWORK 10     DATE : 23/04/2025
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node *left;
+    struct Node *right;
+};
+
+struct Node* createNode(int data){
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data=data;
+    newNode->left=NULL;
+    newNode->right=NULL;
+    return newNode;
+};
+
+void insert(struct Node **root, int data){
+    struct Node *newNode = createNode(data);
+    if(*root == NULL){
+        *root = newNode;
+        return;
+    }
+    struct Node *current = *root;
+    while(1){
+        if(data<current->data){
+            if(current->left==NULL){
+                current->left=newNode;				 // if lesft child is NULL -> insert there 
+                break;
+            }
+            else{
+                current=current->left; 				// or move to left child
+            }
+        }
+        else{
+            if(current->right==NULL){
+                current->right=newNode;
+                break;
+            }
+            else{
+                current=current->right;
+            }
+        }
+    }
+}
+
+void inOrder(struct Node *root){
+    if(root!=NULL){
+        inOrder(root->left);
+        printf("%d ",root->data);
+        inOrder(root->right);
+    }
+}
+
+void freeTree(struct Node *root){
+    if(root!=NULL){
+       freeTree(root->left);
+       freeTree(root->right);
+       free(root);
+    }
+}
+
+int main()
+{
+    int arr[]={5,3,7,1,4,6,8};
+    int n=sizeof(arr)/sizeof(arr[0]);
+    struct Node *root = NULL;
+    for(int i=0;i<n;i++)
+        insert(&root,arr[i]);
+    printf("Sorted Array : ");
+    inOrder(root);
+    printf("\n");
+    freeTree(&root);
+    return 0;
+}
+
+OUTPUT =>
+
+Sorted Array : 1 3 4 5 6 7 8
